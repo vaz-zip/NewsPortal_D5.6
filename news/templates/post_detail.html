@@ -1,0 +1,49 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Product list {% endblock title %}
+
+{% block content %}
+<table>
+    <thead>
+    <th>
+        Автор
+    </th>
+    <th>
+        Категория
+    </th>
+    <th>
+        Опубликовано
+    </th>
+    <th>
+        Заголовок
+    </th>
+    <th>
+        Текст
+    </th>
+    <th>
+        Рейтинг
+    </th>
+    </thead>
+    <tr>
+        <td>
+            {{ new.author.author_user|title }}
+        </td>
+        <td>
+            {{ new.category|title }}
+        </td>
+        <td>
+            {{ new.time_public|date:'d M Y' }}
+        </td>
+        <td>
+            {{ new.title }}
+        </td>
+        <td>
+            {{ new.text }}
+        </td>
+        <td>
+            {{ new.rating }}
+        </td>
+    </tr>
+
+</table>
+{% endblock content %}

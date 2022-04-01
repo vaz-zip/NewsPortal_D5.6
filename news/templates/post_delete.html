@@ -1,0 +1,55 @@
+{% extends 'flatpages/default.html' %}
+ 
+{% block title %} Product list {% endblock title %}
+ 
+{% block content %}
+<h2>Вы действительно хотите удалить публикацию?</h2>
+<table>
+    <thead>
+    <th>
+        Автор
+    </th>
+    <th>
+        Категория
+    </th>
+    <th>
+        Опубликовано
+    </th>
+    <th>
+        Заголовок
+    </th>
+    <th>
+        Текст
+    </th>
+    <th>
+        Рейтинг
+    </th>
+    </thead>
+    <tr>
+
+        <td>
+            {{ new.author.author_user|title }}
+        </td>
+        <td>
+            {{ new.category|title }}
+        </td>
+        <td>
+            {{ new.time_public|date:'d M Y' }}
+        </td>
+        <td>
+            {{ new.title }}
+
+        </td>
+        <td>
+            {{ new.text|truncatechars:50 }}
+        </td>
+        <td>
+            {{ new.rating }}
+        </td>
+    </tr>
+</table>
+ 
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Подтвердить удаление"></form>
+{% endblock content %} 

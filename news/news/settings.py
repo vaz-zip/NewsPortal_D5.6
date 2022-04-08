@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-bo*_=z7lz5g*sixogd5!4&zkonw!3jx3aspk9j3hrz@weqm97c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -40,6 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_filters',
     'new',
+    'sign',
+    'protect',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1
@@ -52,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 
 ]
@@ -74,6 +81,22 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+# Чтобы возможно было авторизоваться через сторонние сервисы, такие как гугл, мы создаем другую форму и
+# указываем другой адрес, первая форма лучше
+LOGIN_URL = '/accounts/login/'
+# Django перенаправляет неавторизованных пользователей на страницу входа, указанного по данному пути
+# LOGIN_URL = 'sign/login/'
+# При корректных данных для входа, пользователь перенаправляется на страницу, указанною по данному пути
+# страница, куда перенаправляется пользователь после успешного входа на сайт, в данном случае корневая страница сайта
+LOGIN_REDIRECT_URL = '/news/'
 WSGI_APPLICATION = 'news.wsgi.application'
 
 # Database
@@ -128,3 +151,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}

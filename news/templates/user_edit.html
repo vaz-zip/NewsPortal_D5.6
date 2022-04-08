@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Product list {% endblock title %}
+
+{% block content %}
+<h3>Информация об авторе</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Редактировать профиль">
+</form>
+{% endblock content %}
+

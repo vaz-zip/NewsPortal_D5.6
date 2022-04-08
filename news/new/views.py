@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import *
 from .filters import PostFilter
-from .forms import PostForm
+from .forms import PostForm, AuthorForm, UserForm
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
 
 class News(ListView):
@@ -50,23 +53,34 @@ def post_filter(request):
     return render(request, '_filtr.html', {'filter': f})
 
 
-class PostCreateView(CreateView):
+class PostCreateView(PermissionRequiredMixin, CreateView):
     template_name = '_add.html'
     form_class = PostForm
+    permission_required = ('new.add_post',)
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = '_edit.html'
     form_class = PostForm
+    permission_required = ('new.change_post',)
 
     def get_object(self, **kwargs):
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     context_object_name = 'new'
     queryset = Post.objects.all()
     success_url = '/news/'
+    permission_required = ('new.delete_post',)
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'user_edit.html'
+    form_class = UserForm
+
+    def get_object(self, **kwargs):
+        return self.request.user

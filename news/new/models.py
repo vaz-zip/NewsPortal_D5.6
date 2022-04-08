@@ -9,6 +9,13 @@ class Author(models.Model):
     def __str__(self):
         return f'{self.author_user}'
 
+    class Meta:
+        verbose_name = 'Автор'
+        verbose_name_plural = 'Авторы'
+
+    def get_absolute_url(self):
+        return f'/user_edit/{self.id}/'
+
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
